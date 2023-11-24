@@ -8,7 +8,7 @@
 - HTML/CSS (Bootstrap)
 
 ## Time de Desenvolvedores
-- [Sara Ferreira]("https://github.com/saraferreira10")
+- [Sara Ferreira](https://github.com/saraferreira10)
 
 ## Objetivo do Software
 O sistema visa automatizar o gerenciamento de uma biblioteca universitária, proporcionando aos usuários uma plataforma para realizar pesquisas, empréstimos, devoluções e gerenciamento do acervo de forma eficiente.
