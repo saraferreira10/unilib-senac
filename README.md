@@ -2,7 +2,7 @@
 
 ![Status do Projeto](https://img.shields.io/badge/status-em%20desenvolvimento-yellow)
 
-## Tecnologias Utilizadas
+## Tecnologias Previstas
 - Java
 - JavaScript (jQuery)
 - HTML/CSS (Bootstrap)
