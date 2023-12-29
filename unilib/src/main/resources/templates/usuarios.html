@@ -172,19 +172,19 @@
 
         <script>
             $(document).ready(function () {
-            $("#searchInput").on("keyup", function () {
-            let searchValue = $(this).val().toLowerCase();
-            let searchBy = $("#searchBy").val();
+                $("#searchInput").on("keyup", function () {
+                    let searchValue = $(this).val().toLowerCase();
+                    let searchBy = $("#searchBy").val();
 
-            $("#tableUsers tbody tr").filter(function () {
-            let tdText = $(this).find(`td:nth-child(${parseInt(searchBy) + 1})`).text().toLowerCase();
-            $(this).toggle(tdText.indexOf(searchValue) > -1);
-            });
-            });
+                    $("#tableUsers tbody tr").filter(function () {
+                        let tdText = $(this).find(`td:nth-child(${parseInt(searchBy) + 1})`).text().toLowerCase();
+                        $(this).toggle(tdText.indexOf(searchValue) > -1);
+                    });
+                });
 
-            $("#searchBy").change(function () {
-            $("#searchInput").trigger("keyup");
-            });
+                $("#searchBy").change(function () {
+                    $("#searchInput").trigger("keyup");
+                });
             });
 
         </script>
