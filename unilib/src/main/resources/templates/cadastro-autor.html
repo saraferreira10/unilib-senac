@@ -4,9 +4,10 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Novo Aluno - UNILIB</title>
+        <title>Autores - UNILIB</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
               integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
     </head>
 
     <body>
@@ -16,19 +17,13 @@
 
         <div class="container mb-5">
             <div class="card p-5">
-                <h3>Cadastrar Aluno</h3>
+                <h3>Novo Autor</h3>
                 <br>
-                <form th:object="${aluno}" class="row g-3" id="form" method="post" action="/alunos/cadastrar">
-                    <div class="col-12">
-                        <label for="nome" class="form-label">Nome</label>
-                        <input th:field="*{nome}" type="text" class="form-control" id="nome" required>
-                    </div>
+                <form th:object="${autor}" class="row g-3" id="form" method="post" action="/autores/cadastrar">
 
-                    <div class="col-12 container-fluid mt-3">
-                        <label class="form-label">Curso</label>
-                        <select th:field="*{curso}" class="form-select" aria-label="Default select example" required>
-                            <option th:each="curso : ${cursos}" th:value="${curso.id}" th:text="${curso.curso}"></option>
-                        </select>
+                    <div class="col-12">
+                        <label for="nome" class="form-label">Autor:</label>
+                        <input th:field="*{nome}" type="text" class="form-control" id="nome" required>
                     </div>
 
                     <br>
@@ -39,38 +34,40 @@
                         <br>
                         <button class="btn btn-secondary" type="reset">Limpar</button>
                         <br>
-                        <a th:href="@{/alunos/listar}" class="btn btn-danger">Cancelar</a>
+                        <a class="btn btn-danger" th:href="@{/acervo/listar}">Cancelar</a>
                     </div>
                 </form>
             </div>
         </div>
 
-        <script src="https://code.jquery.com/jquery-3.7.1.js"
-        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
-
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
                 integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.7.1.js"
+        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 
         <script>
-            $('#form').submit(function (e) {
-                e.preventDefault();
+            $(document).ready(function () {
+                $('#form').submit(function (e) {
+                    e.preventDefault();
 
-                let nome = $('#nome').val().trim();
+                    let autor = $('#nome').val().trim();
 
-                if (nome === '') {
-                    $('#alerta').text("Preencha todos os campos!");
-                    $('#alerta').prop('hidden', false);
-                } else {
+                    if (autor === '') {
+                        $('#alerta').text("Preencha o campo!");
+                        $('#alerta').prop('hidden', false);
+                    } else {
+                        $('#alerta').prop('hidden', true);
+                        this.submit();
+                    }
+
+                });
+
+                $('#form').on('reset', function () {
                     $('#alerta').prop('hidden', true);
-                    this.submit();
-                }
+                });
 
             });
-
-            $('#form').on('reset', function () {
-                $('#alerta').prop('hidden', true);
-            })
         </script>
     </body>
 

@@ -1,93 +1,131 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editar Obra - UNILIB</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Editar Obra - UNILIB</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+              integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    </head>
 
-<body>
+    <body>
 
-    <header th:insert="~{header :: nav}"></header>
-    <br>
+        <header th:insert="~{header :: nav}"></header>
+        <br>
 
-    <div class="container mb-5">
-        <div class="card p-5">
-            <h3>Editar obra</h3>
-            <div>
-                <span class="badge text-bg-primary py-2 px-3">Título da Obra</span>
-            </div>
-            <br>
-            <form class="row g-3" id="form">
-                <div class="col-md-6">
-                    <label for="isbn" class="form-label">ISBN</label>
-                    <input type="text" class="form-control" id="isbn" required>
+        <div class="container mb-5">
+            <div class="card p-5">
+                <h3>Editar obra</h3>
+                <div>
+                    <span th:text="${livro.titulo}" class="badge text-bg-primary py-2 px-3">Título da Obra</span>
                 </div>
-                <div class="col-md-6">
-                    <label for="autor" class="form-label">Autor</label>
-                    <input type="text" class="form-control" id="autor" required>
-                </div>
-                <div class="col-12">
-                    <label for="titulo" class="form-label">Título</label>
-                    <input type="text" class="form-control" id="titulo" required>
-                </div>
-                <div class="col-12 container-fluid mt-3">
-                    <label class="form-label">Categoria</label>
-                    <select class="form-select" aria-label="Default select example" id="categoria">
-                        <option value="1" selected>Ciências Sociais</option>
-                        <option value="2">Ciências Naturais</option>
-                        <option value="3">Política e Atualidades</option>
-                        <option value="4">Psicologia</option>
-                    </select>
-                </div>
-
                 <br>
-                <div class="alert alert-danger" role="alert" id="alerta" hidden></div>
+                <form th:object="${livro}" class="row g-3" id="form" action="/livros/editar" method="post">
+                    <input th:field="*{id}" type="text" class="form-control" id="id" required hidden>
+                    <span th:text="*{alugado}" id="alugado" required hidden></span>
+                    <div class="col-md-6">
+                        <label for="isbn" class="form-label">ISBN</label>
+                        <input th:field="*{isbn}" type="text" class="form-control" id="isbn" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Autor</label>
+                        <select th:field="*{autor.id}" class="form-select" aria-label="Default select example" id="autor"
+                                required>
+                            <option th:each="autor : ${autores}" th:value="${autor.id}" th:text="${autor.nome}"></option>
+                        </select>
+                    </div>
+                    <div class="col-12">
+                        <label for="titulo" class="form-label">Título</label>
+                        <input th:field="*{titulo}" type="text" class="form-control" id="titulo" required>
+                    </div>
+                    <div class="col-12 container-fluid mt-3">
+                        <label class="form-label">Categoria</label>
+                        <select th:field="*{categoria.id}" class="form-select" aria-label="Default select example"
+                                id="categoria" required>
+                            <option th:each="categoria : ${categorias}" th:value="${categoria.id}"
+                                    th:text="${categoria.categoria}"></option>
+                        </select>
+                    </div>
 
-                <div class="col-12 d-flex justify-content-between flex-column flex-lg-row">
-                    <button type="submit" class="btn btn-primary">Salvar</button>
                     <br>
-                    <button class="btn btn-secondary" type="reset">Limpar</button>
-                    <br>
-                    <a th:href="@{/acervo/listar}" class="btn btn-danger">Cancelar</a>
-                </div>
-            </form>
+                    <div class="alert alert-danger" role="alert" id="alerta" hidden></div>
+
+                    <div class="col-12 d-flex justify-content-between flex-column flex-lg-row">
+                        <button type="submit" class="btn btn-primary">Salvar</button>
+                        <br>
+                        <a th:href="@{/acervo/listar}" class="btn btn-danger">Cancelar</a>
+                    </div>
+                </form>
+            </div>
         </div>
-    </div>
 
-    <script src="https://code.jquery.com/jquery-3.7.1.js"
+        <script src="https://code.jquery.com/jquery-3.7.1.js"
         integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
-    <script>
-        $(document).ready(function () {
-            $('#form').submit(function (e) {
-                e.preventDefault();
+        <!--JQUERY MASKS-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"
+                integrity="sha512-pHVGpX7F/27yZ0ISY+VVjyULApbDlD0/X0rgGbTqCE7WFW5MezNTWG/dnhtbBuICzsd0WQPgpE4REBLv+UqChw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-                let isbn = $('#isbn').val().trim();
-                let autor = $('#autor').val().trim();
-                let titulo = $('#titulo').val().trim();
+        <script>
+            $(document).ready(function () {
+                $('#form').submit(function (e) {
+                    e.preventDefault();
 
-                if (isbn === '' || autor === '' || titulo === '') {
-                    $('#alerta').text("Preencha todos os campos!");
-                    $('#alerta').prop('hidden', false);
-                } else {
-                    $('#alerta').prop('hidden', true);
-                    this.submit();
-                }
+                    let isbn = $('#isbn').val().trim();
+                    let autor = $('#autor').val().trim();
+                    let titulo = $('#titulo').val().trim();
+                    let regex = /^\d{3}-\d{2}-\d{5}-\d{2}-\d{1}$/;
+
+                    if (isbn === '' || autor === '' || titulo === '') {
+                        $('#alerta').text("Preencha todos os campos!");
+                        $('#alerta').prop('hidden', false);
+                    } else if (!regex.test(isbn)) {
+                        $('#alerta').text("ISBN deve ser válido - no formato XXX-XX-XXXXX-XX-X!");
+                        $('#alerta').prop('hidden', false);
+                    } else {
+                        $('#alerta').prop('hidden', true);
+
+                        let dados = {
+                            id: $('#id').val(),
+                            isbn: $('#isbn').val(),
+                            autor: {
+                                id: $('#autor').val()
+                            },
+                            titulo: $('#titulo').val(),
+                            categoria: {
+                                id: $('#categoria').val()
+                            },
+                            alugado: $('#alugado').text()
+                        };
+
+                        $.ajax({
+                            url: 'http://localhost:8080/api/livros',
+                            type: 'PUT',
+                            contentType: 'application/json',
+                            data: JSON.stringify(dados),
+                            success: function (data) {
+                                alert('Atualizado!');
+                                window.location.href = '/acervo/listar';
+                                console.log(data);
+                            },
+                            error: function (error) {
+                                console.log(error);
+                                alert('Erro! Verifique se o ISBN já existe no sistema.');
+                            }
+                        });
+                    }
+                });
+
+                $("#isbn").mask('000-00-00000-00-0');
 
             });
+        </script>
 
-            $('#form').on('reset', function () {
-                $('#alerta').prop('hidden', true);
-            })
-        });
-    </script>
-</body>
+    </body>
 
 </html>

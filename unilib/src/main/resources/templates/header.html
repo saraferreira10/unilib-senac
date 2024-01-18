@@ -1,35 +1,40 @@
 <!DOCTYPE html>
 <nav class="navbar">
     <div class="container-fluid d-flex justify-content-end py-2">
-        <span class="d-none d-sm-block badge text-bg-primary py-2 mx-5">Nome do usuário - role do usuário</span>
+        <div class="d-none d-sm-block badge text-bg-primary py-2"><span th:text="${nome}"></span> - <span
+                th:text="${role}"></span></div>
 
-        <button class="btn btn-secondary">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                 class="bi bi-box-arrow-right" viewBox="0 0 16 16">
-            <path fill-rule="evenodd"
-                  d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0z" />
-            <path fill-rule="evenodd"
-                  d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z" />
-            </svg>
-        </button>
+        <div class="mx-5">
+            <a class="btn btn-secondary" onclick="logout()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                     class="bi bi-box-arrow-right" viewBox="0 0 16 16">
+                <path fill-rule="evenodd"
+                      d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0z" />
+                <path fill-rule="evenodd"
+                      d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z" />
+                </svg>
+            </a>
+        </div>
     </div>
-    <div class="container-fluid bg-body-tertiary justify-content-center py-2">
+    <div class="container-fluid bg-dark justify-content-center py-2">
         <ul class="nav">
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown"
                    aria-expanded="false">
                     Acervo
                 </a>
                 <ul class="dropdown-menu">
                     <li><a class="dropdown-item" th:href="@{/acervo/listar}">Listar</a></li>
                     <li><a class="dropdown-item" th:href="@{/acervo/cadastrar}">Cadastrar nova obra</a></li>
+                    <li><a class="dropdown-item" th:href="@{/categorias/cadastrar}">Cadastrar categoria</a></li>
+                    <li><a class="dropdown-item" th:href="@{/autores/cadastrar}">Cadastrar autor</a></li>
                 </ul>
             </li>
 
-            <a class="nav-link" th:href="@{/emprestimos/listar}">Empréstimos</a>
+            <a class="nav-link text-white" th:href="@{/emprestimos/listar}">Empréstimos</a>
 
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+            <li class="nav-item dropdown" th:if="${role.name() == 'ADMINISTRADOR'}">
+                <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown"
                    aria-expanded="false">
                     Usuários
                 </a>
@@ -40,15 +45,26 @@
             </li>
 
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown"
                    aria-expanded="false">
                     Alunos
                 </a>
                 <ul class="dropdown-menu">
                     <li><a class="dropdown-item" th:href="@{/alunos/listar}">Listar</a></li>
                     <li><a class="dropdown-item" th:href="@{/alunos/cadastrar}">Cadastrar novo aluno</a></li>
+                    <li><a class="dropdown-item" th:href="@{/cursos/cadastrar}">Cadastrar curso</a></li>
                 </ul>
             </li>
         </ul>
     </div>
+
+    <script>
+        function logout() {
+            let logout = confirm("Deseja encerrar a sessão?");
+
+            if (logout) {
+                window.location.href = "/logout";
+            }
+        }
+    </script>
 </nav>

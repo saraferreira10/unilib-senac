@@ -10,7 +10,7 @@
 
     </head>
 
-    <body>
+    <body class="mb-5">
 
         <header th:insert="~{header :: nav}"></header>
         <br>
@@ -31,30 +31,37 @@
                 <table class="table" id="table">
                     <thead>
                         <tr>
-                            <th scope="col" class="text-center">#</th>
+                            <th scope="col" class="text-center" hidden>#</th>
                             <th scope="col" class="text-center">ISBN</th>
                             <th scope="col" class="text-center">Título</th>
                             <th scope="col" class="text-center">Autor</th>
                             <th scope="col" class="text-center">Categoria</th>
                             <th scope="col" class="text-center">Disponibilidade</th>
-                            <th scope="col" class="text-center">#</th>
+                            <th scope="col" class="text-center" th:if="${role.name() == 'BIBLIOTECARIO'}">#</th>
                             <th scope="col" class="text-center">#</th>
                             <th scope="col" class="text-center">#</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <th scope="row" class="text-center">1</th>
-                            <td class="text-center">9788565965590</td>
-                            <td class="text-center">O Ateneu </td>
-                            <td class="text-center">Raul Pompeia </td>
-                            <td class="text-center">Literatura Nacional</td>
-                            <td class="text-center">Indisponível</td>
+                        <tr th:each="livro : ${livros}">
+                            <td scope="row" class="text-center" th:text="${livro.id}" hidden></td>
+                            <td class="text-center" th:text="${livro.isbn}"></td>
+                            <td class="text-center" th:text="${livro.titulo}"></td>
+                            <td class="text-center" th:text="${livro.autor.nome}"></td>
+                            <td class="text-center" th:text="${livro.categoria.categoria}"></td>
+
                             <td class="text-center">
-                                <a th:href="@{/emprestimos/cadastrar}" class="btn btn-primary">Novo Empréstimo</a>
+                                <span th:if="${not livro.alugado}" class="badge text-bg-success p-3">Disponível</span>
+                                <span th:if="${livro.alugado}" class="badge text-bg-warning p-3">Indisponível</span>
+                            </td>
+                            <td class="text-center" th:if="${role.name() == 'BIBLIOTECARIO'}">
+                                <button th:if="${livro.alugado || not livro.existe}" class="btn btn-primary"
+                                        disabled>Alugar</button>
+                                <a th:if="${not livro.alugado && livro.existe}"
+                                   th:href="@{'/emprestimos/cadastrar/' + ${livro.id}}" class="btn btn-primary">Alugar</a>
                             </td>
                             <td class="text-center">
-                                <a th:href="@{/acervo/editar}" class="btn btn-primary">
+                                <a th:href="@{'/acervo/editar/' + ${livro.id}}" class="btn btn-primary">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                          class="bi bi-pencil-square" viewBox="0 0 16 16">
                                     <path
@@ -64,49 +71,25 @@
                                     </svg>
                                 </a>
                             </td>
-                            <td class="text-center">
-                                <button type="button" class="btn btn-danger" data-bs-toggle="modal"
-                                        data-bs-target="#exampleModal">
+                            <td th:if="${livro.alugado}" class="text-center">
+                                <button type="button" class="btn btn-danger" disabled>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                          class="bi bi-trash3-fill" viewBox="0 0 16 16">
                                     <path
                                         d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5" />
                                     </svg>
                                 </button>
+                            </td>
 
-                                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                                     aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <div class="text-danger">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                         fill="currentColor" class="bi bi-exclamation-triangle"
-                                                         viewBox="0 0 16 16">
-                                                    <path
-                                                        d="M7.938 2.016A.13.13 0 0 1 8.002 2a.13.13 0 0 1 .063.016.146.146 0 0 1 .054.057l6.857 11.667c.036.06.035.124.002.183a.163.163 0 0 1-.054.06.116.116 0 0 1-.066.017H1.146a.115.115 0 0 1-.066-.017.163.163 0 0 1-.054-.06.176.176 0 0 1 .002-.183L7.884 2.073a.147.147 0 0 1 .054-.057zm1.044-.45a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566z" />
-                                                    <path
-                                                        d="M7.002 12a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 5.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z" />
-                                                    </svg>
-                                                </div>
-                                                <h1 class="modal-title fs-5 text-danger" id="exampleModalLabel">
-                                                    &nbsp;Confirmação
-                                                </h1>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                        aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body text-start">
-                                                Deseja excluir esta obra?
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary"
-                                                        data-bs-dismiss="modal">Cancelar</button>
-                                                <button type="button" class="btn btn-danger">Sim, exclua este
-                                                    título!</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                            <td th:if="${not livro.alugado}" class="text-center">
+                                <button type="button" class="btn btn-danger btn-desativar"
+                                        th:id="'btn-desativar-' + ${livro.id}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                         class="bi bi-trash3-fill" viewBox="0 0 16 16">
+                                    <path
+                                        d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5" />
+                                    </svg>
+                                </button>
                             </td>
                         </tr>
                     </tbody>
@@ -130,14 +113,40 @@
                     $("#table tbody tr").filter(function () {
                         let tdText = $(this).find(`td:nth-child(${parseInt(searchBy) + 1})`).text().toLowerCase();
                         $(this).toggle(tdText.indexOf(searchValue) > -1);
-                    }); 
+                    });
                 });
 
                 $("#searchBy").change(function () {
                     $("#searchInput").trigger("keyup");
                 });
-            });
 
+                $('button[id^="btn-delete-"]').click(function () {
+                    let id = this.id.replace('btn-delete-', '');
+                    id = parseInt(id, 10);
+                    deletar(id);
+                })
+
+
+                $(".btn-desativar").click(function () {
+                    let id = $(this).attr("id").split("-")[2];
+
+                    let confirmar = confirm("Tem certeza que deseja excluir esta obra?");
+
+                    if (confirmar) {
+                        $.ajax({
+                            type: "PUT",
+                            url: "/api/livros/desativar/" + id,
+                            success: function (data) {
+                                alert("Obra excluída com sucesso!");
+                                location.reload();
+                            },
+                            error: function (error) {
+                                alert("Erro ao excluir obra!");
+                            }
+                        });
+                    }
+                });
+            });
         </script>
     </body>
 

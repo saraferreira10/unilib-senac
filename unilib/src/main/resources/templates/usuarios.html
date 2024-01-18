@@ -23,28 +23,39 @@
                 <option selected value="1">Nome</option>
                 <option value="2">Role</option>
                 <option value="3">Username</option>
+                <option value="4">Situação</option>
             </select>
             <br>
             <div class="table-responsive">
                 <table class="table" id="tableUsers">
                     <thead>
                         <tr>
-                            <th scope="col" class="text-center">#</th>
+                            <th scope="col" class="text-center" hidden>#</th>
                             <th scope="col" class="text-center">Nome</th>
                             <th scope="col" class="text-center">Role</th>
                             <th scope="col" class="text-center">Username</th>
+                            <th scope="col" class="text-center">Situação</th>
                             <th scope="col" class="text-center">#</th>
                             <th scope="col" class="text-center">#</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <th scope="row" class="text-center">1</th>
-                            <td class="text-center">Marcos Mendes</td>
-                            <td class="text-center">Aluno</td>
-                            <td class="text-center">marcos.mendes12</td>
-                            <td class="text-center">
-                                <a th:href="@{/usuarios/editar}" class="btn btn-primary">
+                        <tr th:each="usuario : ${usuarios}">
+                            <th scope="row" class="text-center" th:text="${usuario.id}" hidden></th>
+                            <td th:text="${usuario.nome}" class="text-center"></td>
+                            <td th:text="${usuario.role}" class="text-center"></td>
+                            <td th:text="${usuario.username}" class="text-center"></td>
+
+                            <td th:if="${usuario.ativo}" class="text-center">
+                                <span class="badge text-bg-success py-2 px-3">Ativo</span>
+                            </td>
+
+                            <td th:if="${not usuario.ativo}" class="text-center">
+                                <span class="badge text-bg-danger py-2 px-3">Desativado</span>
+                            </td>
+
+                            <td class="text-center" th:if="${usuario.ativo}">
+                                <a th:href="@{'/usuarios/editar/' + ${usuario.id}}" class="btn btn-primary">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                          class="bi bi-pencil-square" viewBox="0 0 16 16">
                                     <path
@@ -54,57 +65,8 @@
                                     </svg>
                                 </a>
                             </td>
-                            <td class="text-center">
-                                <button type="button" class="btn btn-danger" data-bs-toggle="modal"
-                                        data-bs-target="#exampleModal">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                         class="bi bi-trash3-fill" viewBox="0 0 16 16">
-                                    <path
-                                        d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5" />
-                                    </svg>
-                                </button>
-
-                                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                                     aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <div class="text-danger">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                         fill="currentColor" class="bi bi-exclamation-triangle"
-                                                         viewBox="0 0 16 16">
-                                                    <path
-                                                        d="M7.938 2.016A.13.13 0 0 1 8.002 2a.13.13 0 0 1 .063.016.146.146 0 0 1 .054.057l6.857 11.667c.036.06.035.124.002.183a.163.163 0 0 1-.054.06.116.116 0 0 1-.066.017H1.146a.115.115 0 0 1-.066-.017.163.163 0 0 1-.054-.06.176.176 0 0 1 .002-.183L7.884 2.073a.147.147 0 0 1 .054-.057zm1.044-.45a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566z" />
-                                                    <path
-                                                        d="M7.002 12a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 5.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z" />
-                                                    </svg>
-                                                </div>
-                                                <h1 class="modal-title fs-5 text-danger" id="exampleModalLabel">
-                                                    &nbsp;Confirmação
-                                                </h1>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                        aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body text-start">
-                                                Deseja desativar este usuário?
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary"
-                                                        data-bs-dismiss="modal">Cancelar</button>
-                                                <button type="button" class="btn btn-danger">Sim, desative!</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row" class="text-center">2</th>
-                            <td class="text-center">Mateus Silva</td>
-                            <td class="text-center">Bibliotecário</td>
-                            <td class="text-center">mateus.silva13</td>
-                            <td class="text-center">
-                                <a th:href="@{/usuarios/editar}" class="btn btn-primary">
+                            <td th:unless="${usuario.ativo}" class="text-center">
+                                <button class="btn btn-primary" disabled>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                          class="bi bi-pencil-square" viewBox="0 0 16 16">
                                     <path
@@ -112,50 +74,32 @@
                                     <path fill-rule="evenodd"
                                           d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z" />
                                     </svg>
-                                </a>
+                                </button>
                             </td>
-                            <td class="text-center">
-                                <button type="button" class="btn btn-danger" data-bs-toggle="modal"
-                                        data-bs-target="#exampleModal">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                         class="bi bi-trash3-fill" viewBox="0 0 16 16">
+                            <td th:if="${usuario.ativo}" class="text-center">
+                                <button type="button" class="btn btn-danger btn-desativar"
+                                        th:id="'btn-desativar-' + ${usuario.id}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                                         class="bi bi-person-fill-x" viewBox="0 0 16 16">
                                     <path
-                                        d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5" />
+                                        d="M11 5a3 3 0 1 1-6 0 3 3 0 0 1 6 0m-9 8c0 1 1 1 1 1h5.256A4.5 4.5 0 0 1 8 12.5a4.5 4.5 0 0 1 1.544-3.393Q8.844 9.002 8 9c-5 0-6 3-6 4" />
+                                    <path
+                                        d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7m-.646-4.854.646.647.646-.647a.5.5 0 0 1 .708.708l-.647.646.647.646a.5.5 0 0 1-.708.708l-.646-.647-.646.647a.5.5 0 0 1-.708-.708l.647-.646-.647-.646a.5.5 0 0 1 .708-.708" />
                                     </svg>
                                 </button>
+                            </td>
 
-                                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                                     aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <div class="text-danger">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                         fill="currentColor" class="bi bi-exclamation-triangle"
-                                                         viewBox="0 0 16 16">
-                                                    <path
-                                                        d="M7.938 2.016A.13.13 0 0 1 8.002 2a.13.13 0 0 1 .063.016.146.146 0 0 1 .054.057l6.857 11.667c.036.06.035.124.002.183a.163.163 0 0 1-.054.06.116.116 0 0 1-.066.017H1.146a.115.115 0 0 1-.066-.017.163.163 0 0 1-.054-.06.176.176 0 0 1 .002-.183L7.884 2.073a.147.147 0 0 1 .054-.057zm1.044-.45a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566z" />
-                                                    <path
-                                                        d="M7.002 12a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 5.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z" />
-                                                    </svg>
-                                                </div>
-                                                <h1 class="modal-title fs-5 text-danger" id="exampleModalLabel">
-                                                    &nbsp;Confirmação
-                                                </h1>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                        aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body text-start">
-                                                Deseja desativar este usuário?
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary"
-                                                        data-bs-dismiss="modal">Cancelar</button>
-                                                <button type="button" class="btn btn-danger">Sim, desative!</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                            <td th:if="${not usuario.ativo}" class="text-center">
+                                <button type="button" class="btn btn-success btn-ativar"
+                                        th:id="'btn-ativar-' + ${usuario.id}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                                         class="bi bi-person-fill-check" viewBox="0 0 16 16">
+                                    <path
+                                        d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7m1.679-4.493-1.335 2.226a.75.75 0 0 1-1.174.144l-.774-.773a.5.5 0 0 1 .708-.708l.547.548 1.17-1.951a.5.5 0 1 1 .858.514M11 5a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
+                                    <path
+                                        d="M2 13c0 1 1 1 1 1h5.256A4.5 4.5 0 0 1 8 12.5a4.5 4.5 0 0 1 1.544-3.393Q8.844 9.002 8 9c-5 0-6 3-6 4" />
+                                    </svg>
+                                </button>
                             </td>
                         </tr>
                     </tbody>
@@ -184,6 +128,46 @@
 
                 $("#searchBy").change(function () {
                     $("#searchInput").trigger("keyup");
+                });
+
+                $(".btn-desativar").click(function () {
+                    let id = $(this).attr("id").split("-")[2];
+
+                    let confirmar = confirm("Tem certeza que deseja desativar este usuário?");
+
+                    if (confirmar) {
+                        $.ajax({
+                            type: "PUT",
+                            url: "/api/usuarios/desativar/" + id,
+                            success: function (data) {
+                                alert("Usuário desativado com sucesso!");
+                                location.reload();
+                            },
+                            error: function (error) {
+                                alert("Erro ao desativar usuário!");
+                            }
+                        });
+                    }
+                });
+
+                $(".btn-ativar").click(function () {
+                    let id = $(this).attr("id").split("-")[2];
+
+                    let confirmar = confirm("Tem certeza que deseja ativar este usuário?");
+
+                    if (confirmar) {
+                        $.ajax({
+                            type: "PUT",
+                            url: "/api/usuarios/ativar/" + id,
+                            success: function (data) {
+                                alert("Usuário ativado com sucesso!");
+                                location.reload();
+                            },
+                            error: function (error) {
+                                alert("Erro ao ativar usuário!");
+                            }
+                        });
+                    }
                 });
             });
 

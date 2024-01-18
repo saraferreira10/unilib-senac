@@ -16,23 +16,39 @@
 
         <div class="container mb-5">
             <div class="card p-5">
-                <h3>Novo Empréstimo - Nome do Livro</h3>
+                <h3>Novo Empréstimo</h3>
+                <div>
+                    <span th:text="${livro.titulo}" class="badge text-bg-primary py-2 px-3">Título da Obra</span>
+                </div>
                 <br>
-                <form class="row g-3">
+                <form class="row g-3" th:object="${emprestimo}" th:action="'/emprestimos/cadastrar/' + ${livro.id}"
+                      method="post">
+
+                    <div class="col-12 container-fluid mt-3" hidden>
+                        <label class="form-label">Usuário</label>
+                        <select th:field="*{bibliotecario}" class="form-select" aria-label="Default select example" required>
+                            <option th:value="${bibliotecario.id}" th:text="${bibliotecario.nome}"></option>
+                        </select>
+                    </div>
+
                     <div class="col-12 container-fluid mt-3">
                         <label class="form-label">Aluno</label>
-                        <select class="form-select" aria-label="Default select example" id="aluno">
-                            <option value="1" selected>Luís Silva</option>
-                            <option value="2">Maria Mendes</option>
+                        <select th:field="*{alunoModel}" class="form-select" aria-label="Default select example" required>
+                            <option th:each="aluno : ${alunos}" th:value="${aluno.id}" th:text="${aluno.nome}"></option>
                         </select>
                     </div>
                     <div class="col-12">
                         <label for="dataEmprestimo" class="form-label">Data de empréstimo</label>
-                        <input type="datetime-local" class="form-control" id="dataEmprestimo" required>
+                        <input th:field="*{dataEmprestimo}" type="date" class="form-control" id="dataEmprestimo"
+                               required>
                     </div>
+
+                    <input th:value="${livro.id}" type="text" class="form-control" id="livroModel"
+                           required hidden>
+
                     <div class="col-12">
                         <label for="prazo" class="form-label">Prazo</label>
-                        <input type="date" class="form-control" id="prazo" required>
+                        <input th:field="*{prazo}" type="date" class="form-control" id="prazo" required>
                     </div>
 
                     <div class="col-12 d-flex justify-content-between flex-column flex-lg-row">
