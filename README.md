@@ -4,6 +4,7 @@
 
 ## Tecnologias Previstas
 - Java
+- Spring 
 - JavaScript (jQuery)
 - HTML/CSS (Bootstrap)
 
