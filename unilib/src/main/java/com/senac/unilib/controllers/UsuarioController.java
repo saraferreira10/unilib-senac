@@ -24,9 +24,4 @@ public class UsuarioController {
         return new ModelAndView("editar-usuario");
     }
 
-    @GetMapping("/configuracao")
-    public ModelAndView configurar() {
-        return new ModelAndView("configuracoes-user");
-    }
-
 }
