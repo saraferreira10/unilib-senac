@@ -10,10 +10,11 @@
 
     </head>
 
-    <body>
+    <body class="mb-5">
 
         <header th:insert="~{header :: nav}"></header>
         <br>
+        <p th:text="${idUserLogado}" id="idUserLogado" hidden></p>
 
         <div class="container">
             <input class="form-control me-2" type="search" placeholder="Buscar..." aria-label="Search" id="searchInput">
@@ -30,7 +31,7 @@
                 <table class="table" id="tableUsers">
                     <thead>
                         <tr>
-                            <th scope="col" class="text-center" hidden>#</th>
+                            <th scope="col" class="text-center">#</th>
                             <th scope="col" class="text-center">Nome</th>
                             <th scope="col" class="text-center">Role</th>
                             <th scope="col" class="text-center">Username</th>
@@ -41,7 +42,7 @@
                     </thead>
                     <tbody>
                         <tr th:each="usuario : ${usuarios}">
-                            <th scope="row" class="text-center" th:text="${usuario.id}" hidden></th>
+                            <th scope="row" class="text-center" th:text="${usuario.id}"></th>
                             <td th:text="${usuario.nome}" class="text-center"></td>
                             <td th:text="${usuario.role}" class="text-center"></td>
                             <td th:text="${usuario.username}" class="text-center"></td>

@@ -29,7 +29,7 @@
                 <table class="table" id="table">
                     <thead>
                         <tr>
-                            <th scope="col" class="text-center" hidden>#</th>
+                            <th scope="col" class="text-center">#</th>
                             <th scope="col" class="text-center">Nome</th>
                             <th scope="col" class="text-center">Curso</th>
                             <th scope="col" class="text-center">Situação</th>
@@ -39,7 +39,7 @@
                     </thead>
                     <tbody>
                         <tr th:each="aluno : ${alunos}">
-                            <th scope="row" class="text-center" th:text="${aluno.id}" hidden></th>
+                            <th scope="row" class="text-center" th:text="${aluno.id}"></th>
                             <td class="text-center" th:text="${aluno.nome}"></td>
                             <td class="text-center" th:text="${aluno.curso.curso}"></td>
                             <td class="text-center" th:if="${aluno.ativo}">

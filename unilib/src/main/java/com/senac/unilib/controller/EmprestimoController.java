@@ -23,27 +23,27 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 @RequestMapping("/emprestimos")
 public class EmprestimoController {
-
+    
     @Autowired
     EmprestimoService emprestimoService;
-
+    
     @Autowired
     AlunoService alunoService;
-
+    
     @Autowired
     LivroService livroService;
-
+    
     @Autowired
     UsuarioService usuarioService;
-
+    
     @GetMapping("/listar")
     public ModelAndView listar(HttpServletRequest request) {
         HttpSession sessao = request.getSession();
-
+        
         if (sessao == null || sessao.getAttribute("usuario") == null) {
             return new ModelAndView("redirect:/");
         }
-
+        
         ModelAndView mv = new ModelAndView("emprestimos");
         var usuario = usuarioService.getByUsername(sessao.getAttribute("usuario").toString());
         mv.addObject("nome", usuario.getNome());
@@ -52,45 +52,52 @@ public class EmprestimoController {
         mv.addObject("emprestimos", emprestimoService.getAll());
         return mv;
     }
-
+    
     @GetMapping("/cadastrar/{id}")
     public String cadastrar(@PathVariable(name = "id") Long id, Model model, HttpServletRequest request) {
         HttpSession sessao = request.getSession();
-
+        
         if (sessao == null || sessao.getAttribute("usuario") == null) {
             return "redirect:/";
         }
-
+        
         var usuario = usuarioService.getByUsername(sessao.getAttribute("usuario").toString());
-
+        
         if (!livroService.existsById(id) || usuario.getRole().toString().equalsIgnoreCase("ADMINISTRADOR")) {
             return "redirect:/emprestimos/listar";
         }
-
+        
         model.addAttribute("nome", usuario.getNome());
         model.addAttribute("bibliotecario", usuario);
         model.addAttribute("role", usuario.getRole());
-
+        
         model.addAttribute("emprestimo", new EmprestimoModel());
         model.addAttribute("livro", livroService.getById(id));
         model.addAttribute("alunos", alunoService.getAlunosAtivos());
         model.addAttribute("usuarios", usuarioService.getBibliotecariosAtivos());
         return "cadastro-emprestimo";
     }
-
+    
     @PostMapping("/cadastrar/{id}")
     public String cadastrarObra(@PathVariable(name = "id") Long id, @ModelAttribute EmprestimoModel emprestimo) {
         if (!livroService.existsById(id)) {
             return "redirect:/emprestimos/listar";
         }
-
-        EmprestimoModel emprestimoModel = emprestimo;
+        
+        EmprestimoModel emprestimoModel = new EmprestimoModel();
+        emprestimoModel.setBibliotecario(emprestimo.getBibliotecario());
+        emprestimoModel.setAlunoModel(emprestimo.getAlunoModel());
+        emprestimoModel.setDataEmprestimo(emprestimo.getDataEmprestimo());
+        emprestimoModel.setPrazo(emprestimo.getPrazo());
+        
         LivroModel livroModel = livroService.getById(id);
-        emprestimoModel.alugar(livroModel);
+        livroModel.setAlugado(true);
+        emprestimoModel.setDevolvido(false);
+        emprestimoModel.setLivroModel(livroModel);
         emprestimoService.save(emprestimoModel);
         livroService.updateById(livroModel, id);
-
+        
         return "redirect:/emprestimos/listar";
     }
-
+    
 }

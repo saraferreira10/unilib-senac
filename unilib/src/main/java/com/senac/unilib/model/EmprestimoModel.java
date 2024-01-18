@@ -49,15 +49,4 @@ public class EmprestimoModel {
     private LocalDate dataDevolucao = null;
 
     private boolean devolvido = false;
-
-    public void alugar(LivroModel livroModel) {
-        livroModel.setAlugado(true);
-        this.livroModel = livroModel;
-    }
-
-    public void devolver() {
-        livroModel.setAlugado(false);
-        dataDevolucao = LocalDate.now();
-        devolvido = true;
-    }
 }

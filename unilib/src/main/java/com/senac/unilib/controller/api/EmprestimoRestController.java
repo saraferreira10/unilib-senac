@@ -11,6 +11,7 @@ import com.senac.unilib.model.EmprestimoModel;
 import com.senac.unilib.model.LivroModel;
 import com.senac.unilib.services.EmprestimoService;
 import com.senac.unilib.services.LivroService;
+import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/api/emprestimos")
@@ -27,8 +28,9 @@ public class EmprestimoRestController {
         if (emprestimoService.existsById(id)) {
             if (!emprestimoService.getById(id).isDevolvido()) {
                 EmprestimoModel emprestimoModel = emprestimoService.getById(id);
-                emprestimoModel.devolver();
+                emprestimoModel.setDevolvido(true);
                 LivroModel livroModel = emprestimoModel.getLivroModel();
+                livroModel.setAlugado(false);
                 livroService.updateById(livroModel, livroModel.getId());
                 emprestimoService.updateById(emprestimoModel, id);
             }
@@ -41,8 +43,10 @@ public class EmprestimoRestController {
     public void devolver(@PathVariable(name = "id") Long id) {
         if (emprestimoService.existsById(id)) {
             EmprestimoModel emprestimoModel = emprestimoService.getById(id);
-            emprestimoModel.devolver();
             LivroModel livroModel = emprestimoModel.getLivroModel();
+            emprestimoModel.setDevolvido(true);
+            livroModel.setAlugado(false);
+            emprestimoModel.setDataDevolucao(LocalDate.now());
             livroService.updateById(livroModel, livroModel.getId());
             emprestimoService.updateById(emprestimoModel, id);
         }

@@ -40,7 +40,7 @@ public class UsuarioController {
         if (usuario.getRole().equals(Role.BIBLIOTECARIO)) {
             return new ModelAndView("redirect:/logout");
         }
-
+        
         ModelAndView mv = new ModelAndView("usuarios");
         mv.addObject("nome", usuario.getNome());
         mv.addObject("role", usuario.getRole());
@@ -94,6 +94,8 @@ public class UsuarioController {
         }
 
         model.addAttribute("usuario", usuarioService.getById(id));
+        model.addAttribute("usuarioLogado", sessao.getAttribute("usuario"));
+        model.addAttribute("username", usuarioService.getById(id).getUsername());
         model.addAttribute("nome", usuario.getNome());
         model.addAttribute("role", usuario.getRole());
         return "editar-usuario";

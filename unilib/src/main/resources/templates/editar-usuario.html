@@ -13,6 +13,8 @@
 
         <header th:insert="~{header :: nav}"></header>
         <br>
+        <p th:text="${usuarioLogado}" id="usuarioLogado" hidden></p>
+        <p th:text="${username}" id="nomeUsuario" hidden></p>
 
         <div class="container mb-5">
             <div class="card p-5">
@@ -87,10 +89,13 @@
                             data: JSON.stringify(dados),
                             success: function (data) {
                                 alert('Atualizado!');
+                                if ($('#usuarioLogado').text() === $('#nomeUsuario').text()) {
+                                    window.location.href = '/logout';
+                                }
                                 window.location.href = '/usuarios/listar';
                             },
                             error: function (error) {
-                                console.log(error)
+                                console.log(error);
                                 alert('Erro: verifique se o username já existe no sistema!');
                             }
                         });
@@ -99,7 +104,7 @@
 
                 $('#form').on('reset', function () {
                     $('#alerta').prop('hidden', true);
-                })
+                });
 
                 $("#username").on("input", function () {
                     let valor = $(this).val().replace(/\s/g, "");

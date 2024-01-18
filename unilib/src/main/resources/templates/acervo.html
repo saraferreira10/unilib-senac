@@ -31,7 +31,7 @@
                 <table class="table" id="table">
                     <thead>
                         <tr>
-                            <th scope="col" class="text-center" hidden>#</th>
+                            <th scope="col" class="text-center">#</th>
                             <th scope="col" class="text-center">ISBN</th>
                             <th scope="col" class="text-center">Título</th>
                             <th scope="col" class="text-center">Autor</th>
@@ -44,7 +44,7 @@
                     </thead>
                     <tbody>
                         <tr th:each="livro : ${livros}">
-                            <td scope="row" class="text-center" th:text="${livro.id}" hidden></td>
+                            <td scope="row" class="text-center" th:text="${livro.id}"></td>
                             <td class="text-center" th:text="${livro.isbn}"></td>
                             <td class="text-center" th:text="${livro.titulo}"></td>
                             <td class="text-center" th:text="${livro.autor.nome}"></td>
