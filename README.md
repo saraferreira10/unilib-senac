@@ -1,6 +1,6 @@
 # Sistema de Gerenciamento de Biblioteca Universitária
 
-![Status do Projeto](https://img.shields.io/badge/status-em%20desenvolvimento-yellow)
+<img src="http://img.shields.io/static/v1?label=STATUS&message=CONCLUIDO&color=GREEN&style=for-the-badge"/>
 
 ## Tecnologias Previstas
 - Java
